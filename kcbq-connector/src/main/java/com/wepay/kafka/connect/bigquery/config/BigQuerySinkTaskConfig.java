@@ -112,6 +112,16 @@ public class BigQuerySinkTaskConfig extends BigQuerySinkConfig {
           + " and enable timestamp partitioning for each table. Leave this configuration blank,"
           + " to enable ingestion time partitioning for each table.";
 
+  public static final String BIGQUERY_PARTITION_EXPIRATION_CONFIG = "partitionExpiration";
+//  private static final ConfigDef.Type BIGQUERY_PARTITION_EXPIRATION_TYPE = ConfigDef.Type.LONG;
+//  private static final String BIGQUERY_PARTITION_EXPIRATION_DEFAULT = null;
+//  private static final ConfigDef.Importance BIGQUERY_PARTITION_EXPIRATION_IMPORTANCE =
+//          ConfigDef.Importance.LOW;
+//  private static final String BIGQUERY_PARTITION_EXPIRATION_DOC =
+//          "The name of the field in the value that contains the timestamp to partition by in BigQuery"
+//                  + " and enable timestamp partitioning for each table. Leave this configuration blank,"
+//                  + " to enable ingestion time partitioning for each table.";
+
   public static final String BIGQUERY_CLUSTERING_FIELD_NAMES_CONFIG = "clusteringPartitionFieldNames";
   private static final ConfigDef.Type BIGQUERY_CLUSTERING_FIELD_NAMES_TYPE = ConfigDef.Type.LIST;
   private static final List<String> BIGQUERY_CLUSTERING_FIELD_NAMES_DEFAULT = null;
@@ -179,6 +189,12 @@ public class BigQuerySinkTaskConfig extends BigQuerySinkConfig {
             BIGQUERY_TIMESTAMP_PARTITION_FIELD_NAME_IMPORTANCE,
             BIGQUERY_TIMESTAMP_PARTITION_FIELD_NAME_DOC
         ).define(
+            BIGQUERY_PARTITION_EXPIRATION_CONFIG,
+            null,
+            null,
+            null,
+            null
+        ).define(
             BIGQUERY_CLUSTERING_FIELD_NAMES_CONFIG,
             BIGQUERY_CLUSTERING_FIELD_NAMES_TYPE,
             BIGQUERY_CLUSTERING_FIELD_NAMES_DEFAULT,
@@ -216,6 +232,10 @@ public class BigQuerySinkTaskConfig extends BigQuerySinkConfig {
    */
   public Optional<String> getTimestampPartitionFieldName() {
     return Optional.ofNullable(getString(BIGQUERY_TIMESTAMP_PARTITION_FIELD_NAME_CONFIG));
+  }
+
+  public Optional<Long> getPartitionExpirationMs() {
+    return Optional.ofNullable(getLong(BIGQUERY_PARTITION_EXPIRATION_CONFIG));
   }
 
   /**

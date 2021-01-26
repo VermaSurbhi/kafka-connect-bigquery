@@ -103,6 +103,16 @@ public class BigQuerySinkTaskConfigTest {
   }
 
   /**
+   * Test the default for the partition expiration is not present.
+   */
+  @Test
+  public void testEmptyPartitionExpirationMs() {
+    Map<String, String> configProperties = propertiesFactory.getProperties();
+    BigQuerySinkTaskConfig testConfig = new BigQuerySinkTaskConfig(configProperties);
+    assertFalse(testConfig.getPartitionExpirationMs().isPresent());
+  }
+
+  /**
    * Test the default for the field names is not present.
    */
   @Test
