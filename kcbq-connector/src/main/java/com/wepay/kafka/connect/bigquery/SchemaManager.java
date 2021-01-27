@@ -453,7 +453,6 @@ public class SchemaManager {
       // Shameful hack: make the table ingestion time-partitioned here so that the _PARTITIONTIME
       // pseudocolumn can be queried to filter out rows that are still in the streaming buffer
       builder.setTimePartitioning(TimePartitioning.of(Type.DAY));
-//TODO SV/PM: Should we set it on intermediate tables too?
     } else {
       TimePartitioning.Builder timePartitioningBuilder = TimePartitioning.of(Type.DAY).toBuilder();
       timestampPartitionFieldName.ifPresent(timePartitioningBuilder::setField);
