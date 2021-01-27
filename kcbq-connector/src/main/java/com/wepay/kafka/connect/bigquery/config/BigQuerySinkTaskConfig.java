@@ -112,15 +112,11 @@ public class BigQuerySinkTaskConfig extends BigQuerySinkConfig {
           + " to enable ingestion time partitioning for each table.";
 
   public static final String BIGQUERY_PARTITION_EXPIRATION_CONFIG = "partitionExpiration";
-//TODO SV/PM: Add values
-//  private static final ConfigDef.Type BIGQUERY_PARTITION_EXPIRATION_TYPE = ConfigDef.Type.LONG;
-//  private static final String BIGQUERY_PARTITION_EXPIRATION_DEFAULT = null;
-//  private static final ConfigDef.Importance BIGQUERY_PARTITION_EXPIRATION_IMPORTANCE =
-//          ConfigDef.Importance.LOW;
-//  private static final String BIGQUERY_PARTITION_EXPIRATION_DOC =
-//          "The name of the field in the value that contains the timestamp to partition by in BigQuery"
-//                  + " and enable timestamp partitioning for each table. Leave this configuration blank,"
-//                  + " to enable ingestion time partitioning for each table.";
+  private static final ConfigDef.Type BIGQUERY_PARTITION_EXPIRATION_TYPE = ConfigDef.Type.LONG;
+  private static final String BIGQUERY_PARTITION_EXPIRATION_DEFAULT = null;
+  private static final ConfigDef.Importance BIGQUERY_PARTITION_EXPIRATION_IMPORTANCE = ConfigDef.Importance.LOW;
+  private static final String BIGQUERY_PARTITION_EXPIRATION_DOC =
+          "The amount of time, in milliseconds, after which partitions should be deleted from the table.";
 
   public static final String BIGQUERY_CLUSTERING_FIELD_NAMES_CONFIG = "clusteringPartitionFieldNames";
   private static final ConfigDef.Type BIGQUERY_CLUSTERING_FIELD_NAMES_TYPE = ConfigDef.Type.LIST;
@@ -190,11 +186,10 @@ public class BigQuerySinkTaskConfig extends BigQuerySinkConfig {
             BIGQUERY_TIMESTAMP_PARTITION_FIELD_NAME_DOC
         ).define(
             BIGQUERY_PARTITION_EXPIRATION_CONFIG,
-//TODO SV/PM: Add values
-            null,
-            null,
-            null,
-            null
+            BIGQUERY_PARTITION_EXPIRATION_TYPE,
+            BIGQUERY_PARTITION_EXPIRATION_DEFAULT,
+            BIGQUERY_PARTITION_EXPIRATION_IMPORTANCE,
+            BIGQUERY_PARTITION_EXPIRATION_DOC
         ).define(
             BIGQUERY_CLUSTERING_FIELD_NAMES_CONFIG,
             BIGQUERY_CLUSTERING_FIELD_NAMES_TYPE,
@@ -235,7 +230,10 @@ public class BigQuerySinkTaskConfig extends BigQuerySinkConfig {
     return Optional.ofNullable(getString(BIGQUERY_TIMESTAMP_PARTITION_FIELD_NAME_CONFIG));
   }
 
-  //TODO SV/PM: Add comment
+  /**
+   * Returns the partition expiration in ms.
+   * @return Long that represents the partition expiration.
+   */
   public Optional<Long> getPartitionExpirationMs() {
     return Optional.ofNullable(getLong(BIGQUERY_PARTITION_EXPIRATION_CONFIG));
   }
@@ -258,6 +256,11 @@ public class BigQuerySinkTaskConfig extends BigQuerySinkConfig {
               + "Use either bigQueryPartitionDecorator OR timestampPartitionFieldName."
       );
     }
+    getPartitionExpirationMs().ifPresent(partitionExpiration -> {
+      if (partitionExpiration <= 0) {
+        throw new ConfigException("The partition expiration value must be positive.");
+      }
+    });
   }
 
   /**
