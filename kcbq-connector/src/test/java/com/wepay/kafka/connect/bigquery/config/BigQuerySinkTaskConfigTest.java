@@ -19,14 +19,8 @@
 
 package com.wepay.kafka.connect.bigquery.config;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
-
 import com.wepay.kafka.connect.bigquery.SinkTaskPropertiesFactory;
-
 import org.apache.kafka.common.config.ConfigException;
-
 import org.junit.Before;
 import org.junit.Test;
 
@@ -35,6 +29,8 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+
+import static org.junit.Assert.*;
 
 public class BigQuerySinkTaskConfigTest {
   private SinkTaskPropertiesFactory propertiesFactory;
@@ -111,6 +107,7 @@ public class BigQuerySinkTaskConfigTest {
     BigQuerySinkTaskConfig testConfig = new BigQuerySinkTaskConfig(configProperties);
     assertFalse(testConfig.getPartitionExpirationMs().isPresent());
   }
+//TODO SV/PM: Other tests? non-zero? >0? Surbhi says those are tested somewhere else
 
   /**
    * Test the default for the field names is not present.

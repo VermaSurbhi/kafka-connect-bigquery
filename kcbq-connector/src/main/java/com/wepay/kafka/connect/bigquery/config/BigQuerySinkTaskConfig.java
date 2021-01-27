@@ -19,15 +19,14 @@
 
 package com.wepay.kafka.connect.bigquery.config;
 
-import java.util.List;
-import java.util.Optional;
 import org.apache.kafka.common.config.ConfigDef;
 import org.apache.kafka.common.config.ConfigException;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 /**
  * Class for task-specific configuration properties.
@@ -113,6 +112,7 @@ public class BigQuerySinkTaskConfig extends BigQuerySinkConfig {
           + " to enable ingestion time partitioning for each table.";
 
   public static final String BIGQUERY_PARTITION_EXPIRATION_CONFIG = "partitionExpiration";
+//TODO SV/PM: Add values
 //  private static final ConfigDef.Type BIGQUERY_PARTITION_EXPIRATION_TYPE = ConfigDef.Type.LONG;
 //  private static final String BIGQUERY_PARTITION_EXPIRATION_DEFAULT = null;
 //  private static final ConfigDef.Importance BIGQUERY_PARTITION_EXPIRATION_IMPORTANCE =
@@ -190,6 +190,7 @@ public class BigQuerySinkTaskConfig extends BigQuerySinkConfig {
             BIGQUERY_TIMESTAMP_PARTITION_FIELD_NAME_DOC
         ).define(
             BIGQUERY_PARTITION_EXPIRATION_CONFIG,
+//TODO SV/PM: Add values
             null,
             null,
             null,
@@ -234,6 +235,7 @@ public class BigQuerySinkTaskConfig extends BigQuerySinkConfig {
     return Optional.ofNullable(getString(BIGQUERY_TIMESTAMP_PARTITION_FIELD_NAME_CONFIG));
   }
 
+  //TODO SV/PM: Add comment
   public Optional<Long> getPartitionExpirationMs() {
     return Optional.ofNullable(getLong(BIGQUERY_PARTITION_EXPIRATION_CONFIG));
   }
