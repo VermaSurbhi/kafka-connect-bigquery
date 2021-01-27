@@ -455,14 +455,9 @@ public class SchemaManager {
       builder.setTimePartitioning(TimePartitioning.of(Type.DAY));
 //TODO SV/PM: Should we set it on intermediate tables too?
     } else {
-//TODO SV/PM: Refactor to use Optional properly
       TimePartitioning.Builder timePartitioningBuilder = TimePartitioning.of(Type.DAY).toBuilder();
-      if (timestampPartitionFieldName.isPresent()) {
-        timePartitioningBuilder.setField(timestampPartitionFieldName.get());
-      }
-      if (partitionExpiration.isPresent()){
-        timePartitioningBuilder.setExpirationMs(partitionExpiration.get());
-      }
+      timestampPartitionFieldName.ifPresent(timePartitioningBuilder::setField);
+      partitionExpiration.ifPresent(timePartitioningBuilder::setExpirationMs);
 
       builder.setTimePartitioning(timePartitioningBuilder.build());
 
